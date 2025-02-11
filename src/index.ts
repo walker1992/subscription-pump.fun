@@ -118,7 +118,7 @@ const parseInstructions = (tx: VersionedTransactionResponse): CreateInstruction 
         return null;
     }
 
-    console.log(`input accounts:  ${inputAccounts}`)
+    // console.log(`input accounts:  ${inputAccounts}`)
 
     // parse input accounts
     const mint = inputAccounts[0];
@@ -165,17 +165,17 @@ const parseInstructions = (tx: VersionedTransactionResponse): CreateInstruction 
 
     const solBalanceChange = afterSolBalance - beforeSolBalance;
 
-    // skip if sol balance is less than limit
-    if (solBalanceChange < MIN_INITIAL_SOL) {
-        console.warn(`Transaction has less than minimum sol balance (${solBalanceChange / LAMPORTS_PER_SOL} SOL) for signature ${tx.transaction.signatures[0].toString()}`);
-        return null;
-    }
+    // // skip if sol balance is less than limit
+    // if (solBalanceChange < MIN_INITIAL_SOL) {
+    //     console.warn(`Transaction has less than minimum sol balance (${solBalanceChange / LAMPORTS_PER_SOL} SOL) for signature ${tx.transaction.signatures[0].toString()}`);
+    //     return null;
+    // }
 
-    // skip if sol balance is greater than limit
-    if (solBalanceChange > MAX_INITIAL_SOL) {
-        console.warn(`Transaction has more than maximum sol balance (${solBalanceChange / LAMPORTS_PER_SOL} SOL) for signature ${tx.transaction.signatures[0].toString()}`);
-        return null;
-    }
+    // // skip if sol balance is greater than limit
+    // if (solBalanceChange > MAX_INITIAL_SOL) {
+    //     console.warn(`Transaction has more than maximum sol balance (${solBalanceChange / LAMPORTS_PER_SOL} SOL) for signature ${tx.transaction.signatures[0].toString()}`);
+    //     return null;
+    // }
 
     // try to fetch pre token balance
     let beforeTokenBalance: number = 0;
@@ -218,7 +218,7 @@ const parseInstructions = (tx: VersionedTransactionResponse): CreateInstruction 
     // skip if token balance change is less than limit
     if (tokenBalanceChange < (MIN_INITIAL_TOKEN / LAMPORTS_PER_SOL)) {
         console.warn(`Transaction has no token balance change for signature ${tx.transaction.signatures[0].toString()}`);
-        return null;
+        // return null;
     }
 
     // return create instruction
