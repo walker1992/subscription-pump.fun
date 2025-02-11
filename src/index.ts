@@ -118,6 +118,8 @@ const parseInstructions = (tx: VersionedTransactionResponse): CreateInstruction 
         return null;
     }
 
+    console.log(`input accounts:  ${inputAccounts}`)
+
     // parse input accounts
     const mint = inputAccounts[0];
     const mintAuthority = inputAccounts[1];
@@ -301,8 +303,7 @@ const main = async () => {
     console.log(`Subscribed to pumpfun program with subscription ID: ${subscriptionID}`);
 
     while (true) {
-        
-        // await new Promise((resolve) => setTimeout(resolve, 1000));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
     }
 };
 
