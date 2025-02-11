@@ -16,7 +16,7 @@ const COMMITMENT = "confirmed";
 const connection = new Connection(clusterApiUrl("mainnet-beta"),COMMITMENT);
 ```
 
-## analysis result:
+## Analysis Result:
 ```
 Event at slot 319938318, Transaction signature 3YyYBSZSLYunsHzu5PbCLtsBWHxGLk7csB5V5HonX8WQhxGEEcuunonEEpWi2S7yxQrdc9JSFGTjnrcqYMa7vtvJ
 Mint Details:
