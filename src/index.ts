@@ -255,13 +255,14 @@ const handleLogs = (logInfo: Logs, context: Context) => {
     //     return;
     // }
 
-    if (!logInfo.logs.includes(PUMPFUN_CREATE_LOG)) {
-        return;
-    }
-
-    // if(!logInfo.logs.includes(PUMPFUN_INITIALIZEMINT2_LOG)){
-    //    return;
+    // if (!logInfo.logs.includes(PUMPFUN_CREATE_LOG)) {
+    //     return;
     // }
+
+    if(!logInfo.logs.includes(PUMPFUN_INITIALIZEMINT2_LOG)){
+       return;
+    }
+    
     console.log("***************************************************\n");
     console.log(`Event at slot ${context.slot}, Transaction signature ${logInfo.signature} `);
 
