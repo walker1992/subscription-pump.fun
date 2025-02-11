@@ -7,7 +7,7 @@ const PUMP_FUN_PROGRAM_ID = new PublicKey('6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5u
 const PUMPFUN_CREATE_LOG = "Program log: IX: Create Metadata Accounts v3";
 const PUMPFUN_BUY_LOG = "Program log: Instruction: Buy";
 const PUMPFUN_SELL_LOG = "Program log: Instruction: Sell";
-const PUMPFUN_INITIALIZEMINT2_LOG='Program log: Instruction: InitializeMint2';
+const PUMPFUN_INITIALIZEMINT2_LOG = 'Program log: Instruction: InitializeMint2';
 
 const MAX_INITIAL_SOL = 50 * LAMPORTS_PER_SOL;
 const MIN_INITIAL_SOL = 3 * LAMPORTS_PER_SOL;
@@ -16,8 +16,11 @@ const MIN_INITIAL_TOKEN = 1 * LAMPORTS_PER_SOL;
 
 // WebSocket Connection
 const COMMITMENT = "confirmed";
-const connection = new Connection(clusterApiUrl("mainnet-beta"),COMMITMENT);
+// const connection = new Connection(clusterApiUrl("mainnet-beta"),COMMITMENT);
 // const connection = new Connection(clusterApiUrl("devnet"), COMMITMENT);
+
+// quicknode node
+const connection = new Connection("https://blue-damp-pond.solana-mainnet.quiknode.pro/348529ad2c84926999c8f1276a06b5bd162bd0ae",COMMITMENT);
 
 interface CreateInstruction {
     mint: PublicKey;
@@ -255,15 +258,11 @@ const handleLogs = (logInfo: Logs, context: Context) => {
     //     return;
     // }
 
-    // if (!logInfo.logs.includes(PUMPFUN_CREATE_LOG)) {
-    //     return;
-    // }
-
     if(!logInfo.logs.includes(PUMPFUN_INITIALIZEMINT2_LOG)){
        return;
     }
-    
-    console.log("***************************************************\n");
+
+    console.log("***************************************************");
     console.log(`Event at slot ${context.slot}, Transaction signature ${logInfo.signature} `);
 
 
@@ -289,13 +288,16 @@ const handleLogs = (logInfo: Logs, context: Context) => {
             console.log("mintDetails is null or undefined");
             return;
         } 
-        // console.log("Transaction", tx.transaction.signatures[0].toString());
+        // console.log("Transaction", tx.transaction.signaturess[0].toString());
         console.log("Mint Details:");
-        console.log(`contract address: ${mintDetails.bondingCurve}` );
+        console.log(`contract address: ${mintDetails.mint}` );
+        console.log(`creator address: ${mintDetails.user}`);
         console.log("initialSolBalance: ", mintDetails.initialSolBalance);
         console.log("initialTokenBalance: ", mintDetails.initialTokenBalance);
         console.log("tokenDecimals: ", mintDetails.tokenDecimals);
         console.log("Date", new Date().toISOString());
+
+        // console.log("Mint Details", mintDetails);
         console.log("***************************************************\n");
 
 

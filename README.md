@@ -18,13 +18,15 @@ const connection = new Connection(clusterApiUrl("mainnet-beta"),COMMITMENT);
 
 ## Analysis Result:
 ```
-Event at slot 319938318, Transaction signature 3YyYBSZSLYunsHzu5PbCLtsBWHxGLk7csB5V5HonX8WQhxGEEcuunonEEpWi2S7yxQrdc9JSFGTjnrcqYMa7vtvJ
+***************************************************
+Event at slot 319949668, Transaction signature 4D1WjXLEasVtYRk7o2ZsoqrAcqBHfUEbkNe8X3mmomd9Ms4gvkRcvWVQoZoAqRb5mkSc2jXkadd4G1gWpwNtmWpT
 Mint Details:
-contract address: 4eBjydtTPWuSwXgM2At8smmxpFw8pZFjVCi6fRBfpVGW
-initialSolBalance:  2.00123192
-initialTokenBalance:  932937500.000001
+contract address: 8C9jmd1HzjHvY9tvSeR86cqYdEP4wLRhhAoyt5Zjpump
+creator address: EVNnssnnnNTc3GEcg7krLGx1FmAZo3GedsCojpsaLyWU
+initialSolBalance:  1.24123192
+initialTokenBalance:  957409731.113957
 tokenDecimals:  6
-Date 2025-02-11T11:52:22.847Z
+Date 2025-02-11T13:07:28.703Z
 ***************************************************
 
 ```
