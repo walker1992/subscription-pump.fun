@@ -1,4 +1,4 @@
-import { Connection, PublicKey, LAMPORTS_PER_SOL, clusterApiUrl, VersionedTransactionResponse} from '@solana/web3.js';
+import { Connection, Context, Logs, PublicKey, LAMPORTS_PER_SOL, clusterApiUrl, VersionedTransactionResponse} from '@solana/web3.js';
 
 
 // 明确 pump.fun 合约的程序 ID
@@ -243,117 +243,71 @@ const parseInstructions = (tx: VersionedTransactionResponse): CreateInstruction 
     } as CreateInstruction;
 };
 
-const handleTransaction = (tx: VersionedTransactionResponse) => {
-    // skip if transaction is reverted
-    if (tx.meta?.err) {
-        return;
+
+const handleLogs = (logInfo: Logs, context: Context) => {
+    // logs must include both create and buy
+    // if (
+    //     !logInfo.logs.includes(PUMPFUN_CREATE_LOG) ||
+    //     !logInfo.logs.includes(PUMPFUN_BUY_LOG)
+    // ) {
+    //     return;
+    // }
+
+    if(!logInfo.logs.includes(PUMPFUN_INITIALIZEMINT2_LOG)){
+       return;
     }
 
-    // extract pumpfun mint details
-    const mintDetails = parseInstructions(tx);
-    console.log("Transaction", tx.transaction.signatures[0].toString());
-    console.log("Mint Details", mintDetails);
-    console.log("Date", new Date().toISOString());
-};
+    console.log(`Event at slot ${context.slot}, Transaction signature ${logInfo.signature} `);
 
 
-async function subscribeToInitializeMint2Event() {
-    try {
-        // 使用 WebSocket 订阅程序日志
-        const subscriptionId = await connection.onLogs(PUMP_FUN_PROGRAM_ID, (logInfo, context) => {
-
-
-        // logs must include both create and buy
-        // if (
-        //     !logInfo.logs.includes(PUMPFUN_CREATE_LOG) ||
-        //     !logInfo.logs.includes(PUMPFUN_BUY_LOG)
-        // ) {
-        //     return;
-        // }
-
-        if(!logInfo.logs.includes(PUMPFUN_INITIALIZEMINT2_LOG)){
-           return;
+    connection.getTransaction(logInfo.signature, {
+        commitment: COMMITMENT,
+        maxSupportedTransactionVersion: 0,
+    })
+    .then((tx) => {
+        // check if tx is null
+        if (tx == null) {
+            console.warn(`Transaction not found for signature ${logInfo.signature}`);
+            return;
         }
-        console.log(`Event at slot ${context.slot}, Transaction signature ${logInfo.signature} `);
 
+        // skip if transaction is reverted
+        if (tx.meta?.err) {
+            return;
+        }
 
-        connection.getTransaction(logInfo.signature, {
-            commitment: COMMITMENT,
-            maxSupportedTransactionVersion: 0,
-        })
-        .then((tx) => {
-            // check if tx is null
-            if (tx == null) {
-                console.warn(`Transaction not found for signature ${logInfo.signature}`);
-                return;
-            }
+        // extract pumpfun mint details
+        const mintDetails = parseInstructions(tx);
+        console.log("Transaction", tx.transaction.signatures[0].toString());
+        console.log("Mint Details", mintDetails);
+        console.log("Date", new Date().toISOString());
 
-            return handleTransaction(tx);
-        })
-        .catch((error) => {
-            console.error(`Error handling logs for signature ${logInfo.signature}:`);
-            console.error(error);
-        });
+    })
+    .catch((error) => {
+        console.error(`Error handling logs for signature ${logInfo.signature}:`);
+        console.error(error);
+    });
 
-
-            // if (logInfo.logs) {
-            //     // console.log("loginfo: ",logInfo.logs);
-            //     const logString = logInfo.logs.join('\n');
-            //     if (logString.includes(PUMPFUN_INITIALIZEMINT2_LOG)) {
-                        
-            //         console.log(`Detected 'InitializeMint2' event at slot ${context.slot}`);
-            //         console.log("loginfo: ",logInfo.logs);
-
-
-            //         // 提取代币 Mint 账户
-            //         const mintMatch = logString.match(MINT_REGEX);
-            //         if (mintMatch) {
-            //             const mintAccount = mintMatch[1];
-            //             console.log(`Token Mint Account: ${mintAccount}`);
-            //         }
-
-            //         // 提取 Bonding Curve 账户
-            //         const bondingCurveMatch = logString.match(BONDING_CURVE_REGEX);
-            //         if (bondingCurveMatch) {
-            //             const bondingCurveAccount = bondingCurveMatch[1];
-            //             console.log(`Bonding Curve Account: ${bondingCurveAccount}`);
-            //         }
-
-            //         // 提取 Associated Bonding Curve 账户
-            //         const associatedBondingCurveMatch = logString.match(ASSOCIATED_BONDING_CURVE_REGEX);
-            //         if (associatedBondingCurveMatch) {
-            //             const associatedBondingCurveAccount = associatedBondingCurveMatch[1];
-            //             console.log(`Associated Bonding Curve Account: ${associatedBondingCurveAccount}`);
-            //         }
-            //     }
-            // }
-        }, 'confirmed');
-
-        console.log(`Subscribed to program logs with subscription ID: ${subscriptionId}`);
-
-
-        // // 监听账户变化
-        // const accountToMonitor = new PublicKey("6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P"); // 替换为你要监听的账户公钥
-        // const accountChangeSubscriptionId = connection.onAccountChange(
-        //     accountToMonitor,
-        //     (accountInfo, context) => {
-        //         console.log(`Account ${accountToMonitor.toString()} has changed at slot ${context.slot}`);
-        //         // 在这里可以处理账户变化后的逻辑，例如更新 UI 或执行其他操作
-        //         console.log("walker account");
-        //         console.log("account info: ",accountInfo);
-        
-        //     },
-        //     "confirmed"
-        // );
-
-        // console.log(`Subscribed to account changes with subscription ID: ${accountChangeSubscriptionId}`);
-
-
-
-    } catch (error) {
-        console.error('Error subscribing to program logs:', error);
-    }
 }
 
-// 执行订阅函数
-subscribeToInitializeMint2Event();
+const main = async () => {
+    // subscribe to the pumpfun program
+    const subscriptionID = await connection.onLogs(
+        PUMP_FUN_PROGRAM_ID,
+        (logs, ctx) => handleLogs(logs, ctx),
+        COMMITMENT
+    );
+
+    console.log(`Subscribed to pumpfun program with subscription ID: ${subscriptionID}`);
+    
+    while (true) {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+    }
+};
+
+main()
+    .then(() => process.exit(0))
+    .catch((error) => {
+        console.error(error);
+        process.exit(1);
+    });
