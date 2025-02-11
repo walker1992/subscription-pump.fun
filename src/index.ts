@@ -280,8 +280,17 @@ const handleLogs = (logInfo: Logs, context: Context) => {
 
         // extract pumpfun mint details
         const mintDetails = parseInstructions(tx);
-        console.log("Transaction", tx.transaction.signatures[0].toString());
-        console.log("Mint Details", mintDetails);
+        if (mintDetails == null || mintDetails == undefined) {
+            console.log("mintDetails is null or undefined");
+            return;
+        } 
+        // console.log("Transaction", tx.transaction.signatures[0].toString());
+        console.log("Mint Details:");
+        console.log("contract address: ", mintDetails.bondingCurve);
+        console.log("initialSolBalance: ",mintDetails.initialSolBalance);
+        console.log("initialTokenBalance: ",mintDetails.initialTokenBalance);
+        console.log("tokenDecimals: ",mintDetails.tokenDecimals);
+
         console.log("Date", new Date().toISOString());
 
     })
