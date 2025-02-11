@@ -299,9 +299,10 @@ const main = async () => {
     );
 
     console.log(`Subscribed to pumpfun program with subscription ID: ${subscriptionID}`);
-    
+
     while (true) {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        
+        // await new Promise((resolve) => setTimeout(resolve, 1000));
     }
 };
 
