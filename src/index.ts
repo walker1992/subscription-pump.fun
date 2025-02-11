@@ -4,8 +4,8 @@ import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js';
 // 明确 pump.fun 合约的程序 ID
 const PUMP_FUN_PROGRAM_ID = '6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P';
 // 使用 WebSocket 连接到 Solana 主网
-// const connection = new Connection(clusterApiUrl("mainnet-beta"), "confirmed");
-const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
+const connection = new Connection(clusterApiUrl("mainnet-beta"), "confirmed");
+// const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
  // const connection = new Connection("http://api.devnet.solana.com", "confirmed");
  
 // 定义正则表达式来提取账户信息
@@ -53,7 +53,7 @@ async function subscribeToInitializeMint2Event() {
 
 
         // 监听账户变化
-        const accountToMonitor = new PublicKey("GoUgmK3ovd8xrHm3EkdFhiNZy5ohmUDyao1q5W43JjbJ"); // 替换为你要监听的账户公钥
+        const accountToMonitor = new PublicKey("6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P"); // 替换为你要监听的账户公钥
         const accountChangeSubscriptionId = connection.onAccountChange(
             accountToMonitor,
             (accountInfo, context) => {
