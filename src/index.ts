@@ -248,10 +248,14 @@ const parseInstructions = (tx: VersionedTransactionResponse): CreateInstruction 
 
 const handleLogs = (logInfo: Logs, context: Context) => {
     // logs must include both create and buy
-    if (
-        !logInfo.logs.includes(PUMPFUN_CREATE_LOG) ||
-        !logInfo.logs.includes(PUMPFUN_BUY_LOG)
-    ) {
+    // if (
+    //     !logInfo.logs.includes(PUMPFUN_CREATE_LOG) ||
+    //     !logInfo.logs.includes(PUMPFUN_BUY_LOG)
+    // ) {
+    //     return;
+    // }
+
+    if (!logInfo.logs.includes(PUMPFUN_CREATE_LOG)) {
         return;
     }
 
