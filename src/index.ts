@@ -248,17 +248,17 @@ const parseInstructions = (tx: VersionedTransactionResponse): CreateInstruction 
 
 const handleLogs = (logInfo: Logs, context: Context) => {
     // logs must include both create and buy
-    // if (
-    //     !logInfo.logs.includes(PUMPFUN_CREATE_LOG) ||
-    //     !logInfo.logs.includes(PUMPFUN_BUY_LOG)
-    // ) {
-    //     return;
-    // }
-
-    if(!logInfo.logs.includes(PUMPFUN_INITIALIZEMINT2_LOG)){
-       return;
+    if (
+        !logInfo.logs.includes(PUMPFUN_CREATE_LOG) ||
+        !logInfo.logs.includes(PUMPFUN_BUY_LOG)
+    ) {
+        return;
     }
 
+    // if(!logInfo.logs.includes(PUMPFUN_INITIALIZEMINT2_LOG)){
+    //    return;
+    // }
+    console.log("***************************************************\n");
     console.log(`Event at slot ${context.slot}, Transaction signature ${logInfo.signature} `);
 
 
@@ -292,6 +292,7 @@ const handleLogs = (logInfo: Logs, context: Context) => {
         console.log("tokenDecimals: ", mintDetails.tokenDecimals);
         console.log("Date", new Date().toISOString());
         console.log("***************************************************\n");
+
 
     })
     .catch((error) => {
