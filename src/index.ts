@@ -286,12 +286,12 @@ const handleLogs = (logInfo: Logs, context: Context) => {
         } 
         // console.log("Transaction", tx.transaction.signatures[0].toString());
         console.log("Mint Details:");
-        console.log("contract address: ", mintDetails.bondingCurve);
-        console.log("initialSolBalance: ",mintDetails.initialSolBalance);
-        console.log("initialTokenBalance: ",mintDetails.initialTokenBalance);
-        console.log("tokenDecimals: ",mintDetails.tokenDecimals);
-
+        console.log(`contract address: ${mintDetails.bondingCurve}` );
+        console.log("initialSolBalance: ", mintDetails.initialSolBalance);
+        console.log("initialTokenBalance: ", mintDetails.initialTokenBalance);
+        console.log("tokenDecimals: ", mintDetails.tokenDecimals);
         console.log("Date", new Date().toISOString());
+        console.log("***************************************************\n");
 
     })
     .catch((error) => {
